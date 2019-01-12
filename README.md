@@ -8,6 +8,15 @@ Implements authentication (including OTP), querying, and some actions. See *Usag
 
 ## Usage
 
+Install the `atomsphere` gem from rubygems or add it to your `Gemfile`:
+
+```ruby
+source 'https://rubygems.org'
+gem 'atomsphere'
+```
+
+and require `atomsphere`:
+
 ```ruby
 require 'atomsphere'
 ```
