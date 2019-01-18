@@ -1,3 +1,4 @@
+# @author Warren Guy
 module Atomsphere
   VERSION = '0.1.7'
   ROOT = "#{File.expand_path(__dir__)}/atomsphere"

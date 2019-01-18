@@ -2,9 +2,12 @@ require 'json'
 
 module Atomsphere
   class Query
-    class SimpleExpression
+
+    # @see http://help.boomi.com/atomsphere/GUID-4CAE5616-76EB-4C58-B2E3-4173B65EA7EC.html
+    class SimpleExpression < Expression
       attr_accessor :operator, :property, :argument
 
+      # allowed values for {#operator=}
       OPERATORS = {
         equals:       1,
         like:         1,
@@ -19,6 +22,10 @@ module Atomsphere
         less_than_or_equal: 1
       }
 
+      # @param [Hash] params
+      # @option params [String] :property the property/field to query
+      # @option params [:equals,:like,:not_equals,:is_null,:is_not_null,:starts_with,:between,:greater_than,:less_than,:greater_than_or_equal,:less_than_or_equal] :operator query operator
+      # @option params [Array] :argument array containing the number of arguments specified in the {OPERATORS} constant, as arguments to the query {#operator}
       def initialize(params={})
         params = {
           operator: :equals,
@@ -31,11 +38,16 @@ module Atomsphere
         end
       end
 
+      # run all `validate_*!` private methods to ensure validity of expression parameters
+      # @return [true, false]
       def validate!
         private_methods.select{ |m| m =~ /^validate_[a-z0-9_]+\!$/ }.each{ |v| send(v) }
         true
       end
 
+      # returns a hash of the expression that will be sent to the boomi api with {Query#to_hash}
+      # @see #to_json
+      # @return [Hash] hash representation of query that will be sent to the boomi api
       def to_hash
         {
           expression: {
@@ -44,10 +56,6 @@ module Atomsphere
             argument: [*argument]
           }
         }
-      end
-
-      def to_json
-        to_hash.to_json
       end
 
       def operator= arg

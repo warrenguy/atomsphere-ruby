@@ -2,11 +2,17 @@ require 'json'
 
 module Atomsphere
   class Query
-    class GroupingExpression
+
+    # @see http://help.boomi.com/atomsphere/GUID-4CAE5616-76EB-4C58-B2E3-4173B65EA7EC.html
+    class GroupingExpression < Expression
       attr_accessor :operator, :nested_expression
 
+      # allowed values for {#operator=}
       OPERATORS = :and, :or
 
+      # @param [Hash] params
+      # @option params [:and, :or] :operator query operator
+      # @option params [Array<Expression>] :nested_expression one or more {Expression}s
       def initialize(params={})
         params = {
           operator: :and,
@@ -17,6 +23,16 @@ module Atomsphere
         @nested_expression = params[:nested_expression]
       end
 
+      def operator= arg
+        unless OPERATORS.include? arg.to_sym
+          raise ArgumentError, "operator must be one of: #{OPERATORS.join(', ')}"
+        end
+
+        instance_variable_set :@operator, arg.to_sym
+      end
+
+      # run all `validate_*!` private methods to ensure validity of expression parameters
+      # @return [true, false]
       def validate!
         private_methods.select{ |m| m =~ /^validate_[a-z0-9_]+\!$/ }.each{ |v| "#{v}"; send(v) }
         @nested_expression.each(&:validate!)
@@ -24,6 +40,9 @@ module Atomsphere
         true
       end
 
+      # returns a hash of the expression that will be sent to the boomi api with {Query#to_hash}
+      # @see #to_json
+      # @return [Hash] hash representation of query that will be sent to the boomi api
       def to_hash
         {
           expression: {
@@ -33,10 +52,6 @@ module Atomsphere
               map{ |h| h[:expression] }
           }
         }
-      end
-
-      def to_json
-        JSON.pretty_generate to_hash
       end
 
       private
@@ -49,13 +64,13 @@ module Atomsphere
       def validate_expressions!
         raise ArgumentError, "nested_expression must be an array" unless @nested_expression.is_a?(Array)
 
-        not_expressions = @nested_expression.map(&:class).reject do |k|
-          [GroupingExpression, SimpleExpression].include? k
+        not_expressions = @nested_expression.map(&:class).map(&:ancestors).reject do |k|
+          k.include? Atomsphere::Query::Expression
         end
 
         if not_expressions.size > 0
           raise ArgumentError,
-            "invalid expression class(es): #{not_expressions.map(&:class).join(', ')}"
+            "Expressions must be an object of a subclass of Atomsphere::Query::Expression"
         end
       end
 

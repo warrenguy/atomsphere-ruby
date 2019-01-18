@@ -3,3 +3,6 @@
 /.bundle
 /tmp
 Gemfile.lock
+*.gem
+doc/
+.yardoc
