@@ -12,7 +12,7 @@ module Atomsphere
         end
 
         private
-        def __operator(operator, args)
+        def __operator(operator, *args)
           @expression.nested_expression << SimpleExpression.new(
             property: @property,
             operator: operator,
