@@ -96,12 +96,24 @@ module Atomsphere
             'response code was nil'
           ) if response.code.nil?
 
-          raise ApiError.new(
-            request,
-            response,
-            e,
-            "API responded with error #{response.code}: #{response.message}"
-          ) if response.code >= 400
+          if response.code >= 400
+            begin
+              json = JSON.parse(response.response.body)
+              if json['@type'].downcase.eql?('error')
+                 message = json['message']
+              end
+            rescue JSON::ParserError
+            ensure
+              message ||= "API responded with error #{response.code}: #{response.message}"
+            end
+
+            raise ApiError.new(
+              request,
+              response,
+              e,
+              message
+            )
+          end
         end
 
         response
