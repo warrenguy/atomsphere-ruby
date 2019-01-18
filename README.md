@@ -44,36 +44,67 @@ Alternatively, environment variables may be used:
 
 ### Querying
 
+Create a new query for the _Process_ Boomi object
+
 ```ruby
-# create a new query
-query = Atomsphere::Query.new
+query = Atomsphere::Query.new('Process')
+```
 
-# specify the object type to query
-query.object_type = 'Process'
+Filter for _Process_ names starting with _Netsuite_
 
-# filter for query names starting with 'Netsuite'
+```ruby
 query.filter = Atomsphere::Query::GroupingExpression.new(
   operator: :and,
   nested_expression: [
     Atomsphere::Query::SimpleExpression.new(
-      operator: :equals,
+      operator: :like,
       property: :name,
       argument: ['Netsuite%']
     )
   ]
 )
+```
 
-# run the query (fetches first page)
+Run the query
+
+```ruby
 query.run
-
-# see results from all pages that have been fetched
-query.results
-
-# fetch the next page (returns `false` if `last_page?` is `true`)
+# or
 query.next_page
+```
 
-# fetch and show all pages of results (warning: loops over `next_page`)
+See results from all pages that have been fetched
+
+```ruby
+query.results
+```
+
+Fetch the next page (returns `false` if `last_page?` is `true`)
+
+```ruby
+query.next_page
+```
+
+Iterate over `next_page` until `last_page?` is `true` and see all results
+```ruby
 query.all_results
+```
+
+Or as a "one-liner":
+```ruby
+Atomsphere::Query.new(
+  object_type: 'Process',
+  filter: Atomsphere::Query::GroupingExpression.new(
+    operator: :and,
+    nested_expression: [
+      Atomsphere::Query::SimpleExpression.new(
+        operator: :like,
+        property: :name,
+        argument: ['Netsuite%']
+      )
+    ]
+  )
+).all_results
 ```
 
 ### Actions
