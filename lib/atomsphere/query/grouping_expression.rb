@@ -18,8 +18,9 @@ module Atomsphere
       end
 
       def validate!
-        methods.select{ |m| m =~ /^validate_[a-z0-9_]\!$/ }.each{ |v| send(v) }
+        private_methods.select{ |m| m =~ /^validate_[a-z0-9_]+\!$/ }.each{ |v| "#{v}"; send(v) }
         @nested_expression.each(&:validate!)
+
         true
       end
 

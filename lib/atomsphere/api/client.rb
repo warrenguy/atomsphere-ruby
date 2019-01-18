@@ -83,7 +83,41 @@ module Atomsphere
 
       def http_request request
         request['X-Boomi-OTP'] = generate_otp if config.otp_secret
-        response = Response.new(request, http.request(request))
+
+        begin
+          response = Response.new(request, http.request(request))
+        rescue => e
+          raise ApiError.new(request, response)
+        else
+          raise ApiError.new(
+            request,
+            response,
+            e,
+            'response code was nil'
+          ) if response.code.nil?
+
+          raise ApiError.new(
+            request,
+            response,
+            e,
+            "API responded with error #{response.code}: #{response.message}"
+          ) if response.code >= 400
+        end
+
+        response
+      end
+    end
+
+    class ApiError < StandardError
+      attr_reader :request, :response, :original, :message
+
+      def initialize(request, response, original=nil, message=nil)
+        @request  = request
+        @response = response
+        @original = original
+        @message  = message
+
+        super(message)
       end
     end
   end

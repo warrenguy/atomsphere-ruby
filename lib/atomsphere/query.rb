@@ -5,26 +5,24 @@ module Atomsphere
 
     def initialize object_type=nil
       @object_type ||= object_type
-      @page = nil
+      @page = 0
       @result_pages = []
       @filter = GroupingExpression.new
     end
 
     def validate!
-      methods.select{ |m| m =~ /^validate_[a-z0-9_]\!$/ }.each{ |v| send(v) }
+      private_methods.select{ |m| m =~ /^validate_[a-z0-9_]+\!$/ }.each{ |v| send(v) }
       filter.validate!
+
       true
     end
 
     def run
-      @result_pages[0] ||= api_client.post [object_type, :query], to_hash
-      @page = 0
-
-      result_pages[0]
+      next_page
     end
     
     def results
-      result_pages.map(&:to_hash).map{ |h| h['result'] }.flatten(1)
+      result_pages.map(&:to_hash).map{ |h| h['result'] }.map(&:compact).flatten(1)
     end
 
     def all_results
@@ -33,21 +31,25 @@ module Atomsphere
     end
 
     def last_page?
-      !page.nil? && query_token.nil?
+      !page.eql?(0) && query_token.nil?
     end
 
     def next_page
       return false if last_page?
-      return run if page.nil?
 
       begin
-        @result_pages[@page += 1] = api_client.post [object_type, :queryMore], query_token
+        response = if query_token.nil?
+          @page = 1
+          api_client.post([object_type, :query], to_hash)
+        else
+          api_client.post([object_type, :queryMore], query_token)
+        end
       rescue => e
         @page -= 1
         raise e
       end
 
-      result_pages[page]
+      result_pages[page-1] = response
     end
 
     def to_hash
@@ -76,7 +78,11 @@ module Atomsphere
     end
 
     def query_token
-      page.nil? ? nil : result_pages.last.to_hash['queryToken']
+      if result_pages.last.nil? || !result_pages.last.to_hash.keys.include?('queryToken')
+        nil
+      else
+        result_pages.last.to_hash['queryToken']
+      end
     end
   end
 

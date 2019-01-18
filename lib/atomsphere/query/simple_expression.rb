@@ -27,12 +27,12 @@ module Atomsphere
         }.merge(params)
 
         %w(operator property argument).each do |v|
-          send :"#{v}=", params[v.to_sym]
+          instance_variable_set :"@#{v}", params[v.to_sym]
         end
       end
 
       def validate!
-        methods.select{ |m| m =~ /^validate_[a-z0-9_]\!$/ }.each{ |v| send(v) }
+        private_methods.select{ |m| m =~ /^validate_[a-z0-9_]+\!$/ }.each{ |v| send(v) }
         true
       end
 
@@ -50,6 +50,14 @@ module Atomsphere
         to_hash.to_json
       end
 
+      def operator= arg
+        unless OPERATORS.keys.include? arg.to_sym
+          raise ArgumentError, "operator must be one of: #{OPERATORS.keys.join(', ')}"
+        end
+
+        instance_variable_set :@operator, arg.to_sym
+      end
+
       private
       def validate_operator!
         unless OPERATORS.include? operator
@@ -62,7 +70,7 @@ module Atomsphere
       end
 
       def validate_argument!
-        unless argument.is_a?(Array) && argument.size.eql?(OPERATORS[operator])
+        unless [*argument].size.eql?(OPERATORS[operator])
           raise ArgumentError, "'#{operator}' expects #{OPERATORS[operator]} argument(s)"
         end
       end
