@@ -23,7 +23,7 @@ module Atomsphere
         object_type: nil,
         page: 0,
         result_pages: [],
-        filter: GroupingExpression.new
+        filter: nil
       }.merge(Hash[params.select{|k,v| [:object_type, :filter].include? k}])
 
       %w(object_type page result_pages filter).each do |v|
@@ -37,7 +37,7 @@ module Atomsphere
     # @return [true, false]
     def validate!
       private_methods.select{ |m| m =~ /^validate_[a-z0-9_]+\!$/ }.each{ |v| send(v) }
-      filter.validate!
+      filter.validate! unless filter.nil?
 
       true
     end
@@ -94,7 +94,11 @@ module Atomsphere
     def to_hash
       validate!
 
-      { QueryFilter: filter.to_hash }
+      if filter.nil?
+        nil
+      else
+        { QueryFilter: filter.to_hash }
+      end
     end
 
     # query json that will be sent to the boomi api
@@ -110,7 +114,7 @@ module Atomsphere
     end
 
     def validate_filter!
-      unless filter.is_a? GroupingExpression
+      unless filter.nil? || filter.is_a?(GroupingExpression)
         raise ArgumentError, 'filter must be a GroupingExpression'
       end
     end

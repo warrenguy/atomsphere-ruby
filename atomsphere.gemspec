@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'atomsphere'
-  s.version       = '0.1.8'
+  s.version       = '0.1.9'
   s.licenses      = ['MIT']
   s.summary       = "Unofficial Ruby client for the Dell Boomi Atomsphere API"
   s.authors       = ["Warren Guy"]
