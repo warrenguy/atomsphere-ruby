@@ -133,5 +133,6 @@ module Atomsphere
     end
   end
 
+  require "#{ROOT}/query/builder"
   require "#{ROOT}/query/expression"
 end
