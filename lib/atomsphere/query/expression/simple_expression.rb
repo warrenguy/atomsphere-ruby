@@ -51,9 +51,9 @@ module Atomsphere
       def to_hash
         {
           expression: {
-            operator: operator.upcase,
-            property: property,
-            argument: [*argument]
+            operator: operator.to_s.upcase,
+            property: property.to_s,
+            argument: [*argument].map(&:to_s)
           }
         }
       end
