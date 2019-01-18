@@ -1,5 +1,9 @@
 # Boomi Atomsphere API client for Ruby
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Gem Version](https://badge.fury.io/rb/atomsphere.svg)](https://badge.fury.io/rb/atomsphere)
+[![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/gems/atomsphere)
+
 Unofficial Ruby client for the Dell Boomi Atomsphere API. Implements the JSON flavour of Boomi's "RESTish" API.
 
 ## Status
