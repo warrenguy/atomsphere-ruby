@@ -14,6 +14,12 @@ module Atomsphere
       # @option params [:and, :or] :operator query operator
       # @option params [Array<Expression>] :nested_expression one or more {Expression}s
       def initialize(params={})
+        case params
+        when String
+        when Symbol
+          params = {operator: params}
+        end
+
         params = {
           operator: :and,
           nested_expression: []
