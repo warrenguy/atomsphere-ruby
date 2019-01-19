@@ -44,29 +44,21 @@ Alternatively, environment variables may be used:
 
 ### Querying
 
-Generate a query for all _"Processes"_ that start with _"Production"_ and
-contain _"NetSuite"_ or _"Salesforce"_:
+Using the query builder:
 
 ```ruby
-query = Atomsphere.query('Process') do
-  group :and do
-    name.like 'Production%'
-    group :or do
-      name.like '%NetSuite%'
-      name.like '%Salesforce%'
+query = Atomsphere.query(:atom) do
+  group :or do
+    date_installed.less_than '2018-12-01T00:00:00Z'
+    group :and do
+      status.not_equals :online
+      type.not_equals :cloud
     end
   end
 end
 ```
 
-Generate a query for all online Atoms:
-
-```ruby
-query = Atomsphere.query('Atom') do
-  status.equals 'ONLINE'
-  type.equals   'CLOUD'
-end
-```
+See more examples at https://www.rubydoc.info/gems/atomsphere/Atomsphere.query
 
 Inspect the query filter:
 

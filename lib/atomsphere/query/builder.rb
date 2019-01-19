@@ -40,19 +40,19 @@ module Atomsphere
   # Invoke the DSL for constructing an {Atomsphere::Query}
   #
   # @example without an expression, returns all possible results
-  #   Atomsphere.query('Process')
+  #   Atomsphere.query(:process)
   #
   # @example a simple query expression for online Atoms
-  #   Atomsphere.query('Atom') { status.equals :online }
+  #   Atomsphere.query(:atom) { status.equals :online }
   #
   # @example a query expression for online cloud Atoms (implied `and` group)
-  #   Atomsphere.query('Atom') do
+  #   Atomsphere.query(:atom) do
   #     status.equals :online
   #     type.equals :cloud
   #   end
   #
   # @example a more complex example with nested group expressions
-  #   Atomsphere.query('Atom') do
+  #   Atomsphere.query(:atom) do
   #     group :or do
   #       date_installed.less_than '2018-12-01T00:00:00Z'
   #       group :and do

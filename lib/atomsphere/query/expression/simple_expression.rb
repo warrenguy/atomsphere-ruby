@@ -34,8 +34,22 @@ module Atomsphere
         }.merge(params)
 
         %w(operator property argument).each do |v|
-          instance_variable_set :"@#{v}", params[v.to_sym]
+          send :"#{v}=", params[v.to_sym]
         end
+      end
+
+      def property= arg
+        instance_variable_set :@property,
+          case arg
+          when String
+            arg
+          when Symbol
+            arg.to_s.lower_camelcase
+          end
+      end
+
+      def argument= arg
+        instance_variable_set :@argument, arg.map(&:to_s)
       end
 
       # run all `validate_*!` private methods to ensure validity of expression parameters

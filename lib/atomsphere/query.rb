@@ -1,3 +1,6 @@
+require 'facets/string/camelcase'
+require 'facets/string/snakecase'
+
 module Atomsphere
 
   # @attr         [String]               object_type   name of the object to query
@@ -17,6 +20,8 @@ module Atomsphere
       case params
       when String
         params = {object_type: params}
+      when Symbol
+        params = {object_type: params.to_s.upper_camelcase}
       end
 
       params = {
