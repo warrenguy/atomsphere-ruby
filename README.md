@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Gem Version](https://badge.fury.io/rb/atomsphere.svg)](https://badge.fury.io/rb/atomsphere)
-[![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/gems/atomsphere)
+[![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://warrenguy.github.io/atomsphere-ruby/)
 
 Unofficial Ruby client for the Dell Boomi Atomsphere API. Implements the JSON flavour of Boomi's "RESTish" API.
 
@@ -58,7 +58,7 @@ query = Atomsphere.query(:atom) do
 end
 ```
 
-See more examples at https://www.rubydoc.info/gems/atomsphere/Atomsphere.query
+See more examples at https://warrenguy.github.io/atomsphere-ruby/Atomsphere.html#query-class_method
 
 Inspect the query filter:
 
