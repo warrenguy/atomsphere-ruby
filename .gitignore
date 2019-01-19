@@ -6,3 +6,4 @@ Gemfile.lock
 *.gem
 doc/
 .yardoc
+.doc
