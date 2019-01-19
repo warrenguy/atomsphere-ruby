@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.16
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "README";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'><h1>Boomi Atomsphere API client for Ruby</h1>
+
+<p><a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+<a href="https://badge.fury.io/rb/atomsphere"><img src="https://badge.fury.io/rb/atomsphere.svg" alt="Gem Version"></a>
+<a href="https://www.rubydoc.info/gems/atomsphere"><img src="https://img.shields.io/badge/yard-docs-blue.svg" alt="Yard Docs"></a></p>
+
+<p>Unofficial Ruby client for the Dell Boomi Atomsphere API. Implements the JSON flavour of Boomi&#39;s &quot;RESTish&quot; API.</p>
+
+<h2>Status</h2>
+
+<p>Implements authentication (including OTP), querying, and some actions. See <em>Usage</em> below.</p>
+
+<h2>Usage</h2>
+
+<p>Install the <code>atomsphere</code> gem from rubygems or add it to your <code>Gemfile</code>:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_source'>source</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>https://rubygems.org</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>atomsphere</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>and require <code>atomsphere</code>:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>atomsphere</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<h3>Configuration</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='const'><span class='object_link'><a href="Atomsphere.html" title="Atomsphere (module)">Atomsphere</a></span></span><span class='period'>.</span><span class='id identifier rubyid_configure'><span class='object_link'><a href="Atomsphere.html#configure-class_method" title="Atomsphere.configure (method)">configure</a></span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_config'>config</span><span class='op'>|</span>
+  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_account_id'>account_id</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='comment'># Boomi account ID
+</span>  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_username'>username</span>   <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='comment'># user name
+</span>  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_password'>password</span>   <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='comment'># user password
+</span>  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_otp_secret'>otp_secret</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='comment'># base32 OTP secret for two-factor auth
+</span><span class='kw'>end</span>
+</code></pre>
+
+<p>Alternatively, environment variables may be used:</p>
+
+<ul>
+<li><code>BOOMI_ACCOUNT_ID</code></li>
+<li><code>BOOMI_USERNAME</code></li>
+<li><code>BOOMI_PASSWORD</code></li>
+<li><code>BOOMI_OTP_SECRET</code></li>
+</ul>
+
+<h3>Querying</h3>
+
+<p>Using the query builder:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_query'>query</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Atomsphere.html" title="Atomsphere (module)">Atomsphere</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'><span class='object_link'><a href="Atomsphere.html#query-class_method" title="Atomsphere.query (method)">query</a></span></span><span class='lparen'>(</span><span class='symbol'>:atom</span><span class='rparen'>)</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_group'>group</span> <span class='symbol'>:or</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_date_installed'>date_installed</span><span class='period'>.</span><span class='id identifier rubyid_less_than'>less_than</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>2018-12-01T00:00:00Z</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_group'>group</span> <span class='symbol'>:and</span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_status'>status</span><span class='period'>.</span><span class='id identifier rubyid_not_equals'>not_equals</span> <span class='symbol'>:online</span>
+      <span class='id identifier rubyid_type'>type</span><span class='period'>.</span><span class='id identifier rubyid_not_equals'>not_equals</span> <span class='symbol'>:cloud</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<p>See more examples at <a href="https://www.rubydoc.info/gems/atomsphere/Atomsphere.query">https://www.rubydoc.info/gems/atomsphere/Atomsphere.query</a></p>
+
+<p>Inspect the query filter:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_query'>query</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span>
+<span class='id identifier rubyid_query'>query</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+</code></pre>
+
+<p>Run the query:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_query'>query</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span>
+</code></pre>
+
+<p>See results from all pages that have been fetched:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_query'>query</span><span class='period'>.</span><span class='id identifier rubyid_results'>results</span>
+</code></pre>
+
+<p>Fetch the next page (returns <code>false</code> if <code>last_page?</code> is <code>true</code>):</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_query'>query</span><span class='period'>.</span><span class='id identifier rubyid_next_page'>next_page</span>
+</code></pre>
+
+<p>Iterate over <code>next_page</code> until <code>last_page?</code> is <code>true</code> and see all results:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_query'>query</span><span class='period'>.</span><span class='id identifier rubyid_all_results'>all_results</span>
+</code></pre>
+
+<h3>Actions</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='const'><span class='object_link'><a href="Atomsphere.html" title="Atomsphere (module)">Atomsphere</a></span></span><span class='period'>.</span><span class='id identifier rubyid_get_assignable_roles'>get_assignable_roles</span>
+<span class='const'><span class='object_link'><a href="Atomsphere.html" title="Atomsphere (module)">Atomsphere</a></span></span><span class='period'>.</span><span class='id identifier rubyid_execute_process'>execute_process</span> <span class='label'>atom_id:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>12345-uuid-12345</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>process_id:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>12345-uuid-12345</span><span class='tstring_end'>&#39;</span></span>
+<span class='const'><span class='object_link'><a href="Atomsphere.html" title="Atomsphere (module)">Atomsphere</a></span></span><span class='period'>.</span><span class='id identifier rubyid_change_listener_status'>change_listener_status</span> <span class='label'>listener_id:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>12345-uuid-12345</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>container_id:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>12345-uuid-12345</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>action:</span> <span class='symbol'>:pause</span>
+</code></pre>
+
+<h2>License</h2>
+
+<p>MIT License</p>
+
+<p>Copyright (c) 2019 Warren Guy</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+</div></div>
+
+      <div id="footer">
+  Generated on Sun Jan 20 01:04:47 2019 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.16 (ruby-2.6.0).
+</div>
+
+    </div>
+  </body>
+</html>
