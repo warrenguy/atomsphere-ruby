@@ -6,6 +6,8 @@
 
 Unofficial Ruby client for the Dell Boomi Atomsphere API. Implements the JSON flavour of Boomi's "RESTish" API.
 
+https://github.com/warrenguy/atomsphere-ruby
+
 ## Status
 
 Implements authentication (including OTP), querying, and some actions. See *Usage* below.
